@@ -17,7 +17,7 @@ Welcome to **SecondMind SQL**, a simple, secure CLI notepad built with Python an
 
     Install dependencies:
 
-pip install -r requirements.txt
+        pip install -r requirements.txt
 
 Initialize the database by running:
 
