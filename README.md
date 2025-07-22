@@ -1,5 +1,9 @@
 # StarCoder's SecondMind SQL CLI Notepad
 
+![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)
+![License](https://img.shields.io/github/license/StarCoderSC/smartnotepad-cli)
+![Build Status](https://github.com/StarCoderSC/smartnotepad-cli.actions/workflows/python-app.yml/badge.svg)
+
 Welcome to **SecondMind SQL**, a simple, secure CLI notepad built with Python and SQLite. This project allows users to store and manage notes with support for tags, due dates, and user authentication.
 
 ## Features
