@@ -3,6 +3,7 @@
 ![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)
 ![License](https://img.shields.io/github/license/StarCoderSC/secondmind-cli)
 ![Build Status](https://github.com/StarCoderSC/secondmind-cli/actions/workflows/python-app.yml/badge.svg)
+[![codecov](https://codecov.io/gh/StarCoderSC/secondmind-cli/main/graph/badge.svg)](https://codecov.io/gh/StarCoderSC/secondmind-cli)
 
 Welcome to **SecondMind SQL**, a simple, secure CLI notepad built with Python and SQLite. This project allows users to store and manage notes with support for tags, due dates, and user authentication.
 
