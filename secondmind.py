@@ -560,10 +560,7 @@ def main():
         elif auth_choice == "2":
             user = register_user()
         elif auth_choice == "3":
-            if (
-                Prompt.ask("Are you sure you want to exit?", choices=["yes", "no"])
-                == "yes"
-            ):
+            if Prompt.ask("Are you sure you want to exit?", choices=["yes", "no"]) == "yes":
                 console.print("[green]Goodbye![/green]")
                 exit()
         else:
@@ -593,24 +590,7 @@ def main():
                 box=box.ROUNDED,
             )
         )
-        choice = Prompt.ask(
-            "Please enter your choice",
-            choices=[
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "6",
-                "7",
-                "8",
-                "9",
-                "10",
-                "11",
-                "12",
-                "13",
-            ],
-        )
+        choice = Prompt.ask("Please enter your choice", choices=["1","2","3","4","5","6","7","8","9","10","11","12","13"])
 
         if choice == "1":
             your_note = input("Enter your note: ").strip()
@@ -717,10 +697,7 @@ def main():
             export_notes_to_json(user)
 
         elif choice == "13":
-            if (
-                Prompt.ask("Are you sure you want to exit?", choices=["yes", "no"])
-                == "yes"
-            ):
+            if Prompt.ask("Are you sure you want to exit?", choices=["yes", "no"]) == "yes":
                 console.print("[bold green]Goodbye, StarCoder![/bold green]")
                 exit()
 
