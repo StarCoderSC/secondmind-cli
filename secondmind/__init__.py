@@ -8,4 +8,3 @@ Github: https://github.com/StarCoderSC/secondmind-cli
 """
 
 __version__ = "1.0.0"
-
