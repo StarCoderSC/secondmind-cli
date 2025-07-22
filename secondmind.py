@@ -264,16 +264,14 @@ def import_txt_to_db(user):
             imported += 1
 
     console.print(f"[green]Imported {imported} notes from {notes_file} into DB.[/green]")
-       
+
+
 def import_json_to_db(user):
     """
     Import notes from a JSON file into the database for the specified user.
-
     Expected file format: `<username>_notes_export.json`
-
     Each JSON object must have 'note', 'tags', and 'due_date'.
     """
-
     json_file = f"{user}_notes_export.json"
     if not os.path.exists(json_file):
         console.print("[yellow]No exported JSON found to import.[/yellow]")
@@ -299,7 +297,6 @@ def import_json_to_db(user):
 def search_notes_by_keyword(user, keyword):
     """
     Search and display notes containing a given keyword for a specific user.
-
     Args:
         user (str): Username.
         keyword (str): Keyword to search within note content.
@@ -320,7 +317,6 @@ def search_notes_by_keyword(user, keyword):
 def filter_notes_by_tag(user, tag):
     """
     Display notes that contain a specific tag.
-
     Args:
         user (str): Username.
         tag (str): Tag to filter by (without the #).
