@@ -19,6 +19,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install flake8
+          pip install pytest pytest-cov
 
       - name: Lint with flake8
         run: |
@@ -32,6 +33,5 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
-          token: $ {{ secrets.8f9554e2-c462-4271-b04e-191b4dc6fa05 }}
           files: coverage.xml
           fail_ci_if_error: true
