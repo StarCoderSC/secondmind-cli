@@ -31,9 +31,7 @@ def parse_note(raw_note):
 
     tag_tokens = [word for word in note_part.strip().split() if word.startswith("#")]
     tags = tag_tokens
-    clean_note = " ".join(
-        [word for word in note_part.strip().split() if not word.startswith("#")]
-    )
+    clean_note = " ".join([word for word in note_part.strip().split() if not word.startswith("#")])
 
     return {"note": clean_note.strip(), "tags": tags, "due_date": due}
 
@@ -57,6 +55,10 @@ def register_user():
     username = input("Choose a username: ").strip()
     password = getpass("Choose a password: ").strip()
 
+    if not username or not password:
+        console.print("[bold red]Please enter a username and a password.[/bold red]")
+        return
+
     hashed_pw = hash_password(password)
 
     # Check if user already exist
@@ -73,9 +75,8 @@ def register_user():
     # Save new user
     with open("users.txt", "a") as file:
         file.write(f"{username}:{hashed_pw}\n")
-    console.print(
-        f"User [bold green]'{username}'[/bold green] registered successfully!"
-    )
+    console.print(f"User [bold green]'{username}'[/bold green] registered successfully!")
+
     return username
 
 
@@ -90,9 +91,8 @@ def login_user():
             for line in file:
                 saved_user, saved_pw = line.strip().split(":")
                 if saved_user == username and saved_pw == hashed_pw:
-                    console.print(
-                        f"[bold green]'{username}'[/bold green] Login successfull!"
-                    )
+                    console.print(f"[bold green]'{username}'[/bold green] Login successfull!")
+
                     return username
 
     except FileNotFoundError:
@@ -174,9 +174,8 @@ def add_note_to_db(user, note, tags, due_date):
         duplicate = cursor.fetchone()
 
         if duplicate:
-            console.print(
-                "[yellow]Note already exists with same content, tags, and due date. Skipping save.[/yellow]"
-            )
+            console.print("[yellow]Note already exists with same content, tags, and due date. Skipping save.[/yellow]")
+
             conn.close()
             return False
 
@@ -264,16 +263,14 @@ def import_txt_to_db(user):
             add_note_to_db(user, note_part.strip(), tags, due_date)
             imported += 1
 
-    console.print(
-        f"[green]Imported {imported} notes from {notes_file} into DB.[/green]"
-    )
-
-
+    console.print(f"[green]Imported {imported} notes from {notes_file} into DB.[/green]")
+       
 def import_json_to_db(user):
     """
     Import notes from a JSON file into the database for the specified user.
 
     Expected file format: `<username>_notes_export.json`
+
     Each JSON object must have 'note', 'tags', and 'due_date'.
     """
 
@@ -413,15 +410,10 @@ def edit_note_by_id(user, note_id):
         )
 
         new_note = input("New note (leave blank to keep current):").strip()
-        new_tags = input(
-            "New tags (comma-separated, leave blank to keep current): "
-        ).strip()
-        new_due = input(
-            "New due date (YYYY-MM-DD, leave blank to keep current): "
-        ).strip()
+        new_tags = input("New tags (comma-separated, leave blank to keep current): ").strip()
+        new_due = input("New due date (YYYY-MM-DD, leave blank to keep current): ").strip()
 
         final_note = new_note if new_note else old_note
-
         tag_list = [f"#{tags.strip()}" for tags in new_tags.split(",") if tags.strip()]
         final_tags = " ".join(tag_list) if tag_list else (old_tags or "")
         final_due = new_due if new_due else old_due
@@ -456,6 +448,10 @@ def show_due_alerts_from_db():
 
     overdue = 0
     due_today = 0
+
+    if not results:
+        console.print("[bold yellow]No notes yet![/bold yellow]")
+        return
 
     for (due,) in results:
         try:
@@ -493,9 +489,7 @@ def export_notes_to_json(user):
 
     data = []
     for note, tags, due in notes:
-        data.append(
-            {"note": note, "tags": tags.split(",") if tags else [], "due_date": due}
-        )
+        data.append({"note": note, "tags": tags.split(",") if tags else [], "due_date": due})
 
     with open(f"{user}_notes_export.json", "w") as f:
         json.dump(data, f, indent=4)
@@ -535,9 +529,7 @@ def main():
 
     user = None
 
-    console.print(
-        "[bold cyan]Welcome to StarCodersecondMind Secure Notepad[/bold cyan]"
-    )
+    console.print("[bold cyan]Welcome to StarCodersecondMind Secure Notepad[/bold cyan]")
 
     while user is None:
         console.print(
@@ -590,7 +582,7 @@ def main():
                 box=box.ROUNDED,
             )
         )
-        choice = Prompt.ask("Please enter your choice", choices=["1","2","3","4","5","6","7","8","9","10","11","12","13"])
+        choice = Prompt.ask("Please enter your choice", choices=["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"])
 
         if choice == "1":
             your_note = input("Enter your note: ").strip()
@@ -606,29 +598,19 @@ def main():
                 )
                 continue
 
-            your_tags = input(
-                "Add tags (comma-separated, e.g., todo,idea) or press 'Enter' to skip: "
-            ).strip()
+            your_tags = input("Add tags (comma-separated, e.g., todo,idea) or press 'Enter' to skip: ").strip()
             due_input = input("Add due date (YYYY-MM-DD) or leave blank: ").strip()
 
-            tag_list = [
-                f"#{tag.strip()}" for tag in your_tags.split(",") if tag.strip()
-            ]
+            tag_list = [f"#{tag.strip()}" for tag in your_tags.split(",") if tag.strip()]
 
             due_date = None
             if due_input:
                 try:
-                    due_date = datetime.strptime(due_input, "%Y-%m-%d").strftime(
-                        "%Y-%m-%d"
-                    )
+                    due_date = datetime.strptime(due_input, "%Y-%m-%d").strftime("%Y-%m-%d")
                 except ValueError:
                     console.print("[red]Invalid date format. Skipping due date.[/red]")
 
-            console.print(
-                Panel.fit(
-                    f"Note:\n[cyan]{your_note}[/cyan]\nTags:[yellow]{tag_list or '-'}[/yellow]\nDue:[magenta]{due_date or '-'}[/magenta]"
-                )
-            )
+            console.print(Panel.fit(f"Note:\n[cyan]{your_note}[/cyan]\nTags:[yellow]{tag_list or '-'}[/yellow]\nDue:[magenta]{due_date or '-'}[/magenta]"))
             if Prompt.ask("Save this note?", choices=["yes", "no"]) == "yes":
                 add_note_to_db(user, your_note, tag_list, due_date)
                 console.print("[bold green]Note saved to DB.[/bold green]")
@@ -650,9 +632,7 @@ def main():
         elif choice == "4":
             view_note_from_db(user)
             while True:
-                user_input = Prompt.ask(
-                    "Enter note ID to delete (or type 'cancel' to abort): "
-                ).strip()
+                user_input = Prompt.ask("Enter note ID to delete (or type 'cancel' to abort):").strip()
                 if user_input.lower() == "cancel":
                     console.print("[yellow]Delete Cancelled.[/yellow]")
                     break
@@ -666,9 +646,7 @@ def main():
                         console.print(f"[red]Not with ID {note_id} not found[/red]")
                         continue
                 else:
-                    console.print(
-                        "[red]Invalid ID entered. Please enter a number or type 'cancel[/red]"
-                    )
+                    console.print("[red]Invalid ID entered. Please enter a number or type 'cancel[/red]")
 
         elif choice == "5":
             keyword = input("Keyword to search:").strip()
