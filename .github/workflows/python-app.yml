@@ -28,7 +28,7 @@ jobs:
       
       - name: Run tests with coverage
         run: |
-          pytest --cov=secondmind --cov-report=xml
+          pytest --cov=. --cov-report=xml
       
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
