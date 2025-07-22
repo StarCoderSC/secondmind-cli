@@ -1,3 +1,2 @@
 ```plaintext
 rich
-sqlite3
