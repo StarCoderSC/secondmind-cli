@@ -1,5 +1,16 @@
-*.pyc
-__pycache__
-user.txt
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
 *.db
-*.json
+
+# User credentials
+users.txt
+notes_*.txt
+*_notes_export.json
+
+# VS Code
+.vscode/
+
+# Environments
+.env

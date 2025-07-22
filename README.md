@@ -6,6 +6,16 @@
 
 Welcome to **SecondMind SQL**, a simple, secure CLI notepad built with Python and SQLite. This project allows users to store and manage notes with support for tags, due dates, and user authentication.
 
+- 🧾 SQLite database storage
+- 🏷️ Tag filtering
+- 📆 Due date reminders
+- 🔐 User login/register (SHA256-hashed)
+- 📥 Import from TXT/JSON
+- 📤 Export to JSON
+- 🌈 Rich-powered colorful TUI
+- ✅ GitHub Actions CI for code linting
+
+
 ## Features
 - **User Authentication**: Register and login using username and password.
 - **CRUD Operations**: Create, read, update, and delete notes.
@@ -40,3 +50,43 @@ Usage
 
     Import and Export Notes:
     You can import legacy notes from a .txt or .json file, and export your notes as a JSON file for backup.
+
+🔐 Auth System
+
+    Stores credentials hashed using SHA256
+
+    User login and registration via terminal
+
+    Credentials saved to users.txt
+
+📤 Export / 📥 Import
+
+    Supports legacy .txt and .json imports
+
+    JSON backup/export via CLI
+
+🛠 Roadmap
+
+Encryption support
+
+Tag autocomplete
+
+    Turn into installable CLI tool
+
+📄 License
+
+MIT License – See LICENSE file
+
+
+---
+
+## 📜 LICENSE (MIT)
+
+```txt
+MIT License
+
+Copyright (c) 2025 StarCoder
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+...
+(Use `https://choosealicense.com/licenses/mit/` for full version.)
