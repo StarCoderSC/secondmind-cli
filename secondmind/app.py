@@ -258,8 +258,8 @@ def import_txt_to_db(user):
             if "[due:" in line:
                 try:
                     due_date = line.split("[due:")[1].split("]")[0]
-                except:
-                    pass
+                except (IndexError, ValueError):
+                    due_date = None
 
             add_note_to_db(user, note_part.strip(), tags, due_date)
             imported += 1
