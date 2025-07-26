@@ -29,7 +29,7 @@ It supports user authentication, note tagging, due-date reminders, import/export
     git clone https://github.com/StarCoderSC/secondmind-cli.git
     cd secondmind-cli
     pip install -r requirements.txt
-    python app.py  # Launches the CLI and initializes the database
+    python core.py  # Launches the CLI and initializes the database
 
 🧑‍💻 Usage
 🔐 Register/Login
