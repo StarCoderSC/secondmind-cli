@@ -1,15 +1,16 @@
 import hashlib
-from rich.console import Console
 from datetime import datetime
+from rich.console import Console
+from rich.table import Table
 from rich.panel import Panel
 from rich import box
-from rich.table import Table
-import json
 from rich.prompt import Prompt
-import sqlite3
-import os
 from datetime import timedelta
 from getpass import getpass
+import json
+import sqlite3
+import os
+
 
 console = Console()
 
@@ -31,7 +32,9 @@ def parse_note(raw_note):
 
     tag_tokens = [word for word in note_part.strip().split() if word.startswith("#")]
     tags = tag_tokens
-    clean_note = " ".join([word for word in note_part.strip().split() if not word.startswith("#")])
+    clean_note = " ".join(
+        [word for word in note_part.strip().split() if not word.startswith("#")]
+    )
 
     return {"note": clean_note.strip(), "tags": tags, "due_date": due}
 
@@ -42,7 +45,7 @@ def build_note_from_json(data):
     tags = ",".join(data["tags"]) if data["tags"] else ""
     due = f"[due:{data['due_date']}]" if data["due_date"] else ""
 
-    return f"{note} {tags} {due}".strip()
+    return " ".join(part for part in [note, tags, due] if part)
 
 
 def hash_password(password):
@@ -75,7 +78,9 @@ def register_user():
     # Save new user
     with open("users.txt", "a") as file:
         file.write(f"{username}:{hashed_pw}\n")
-    console.print(f"User [bold green]'{username}'[/bold green] registered successfully!")
+    console.print(
+        f"User [bold green]'{username}'[/bold green] registered successfully!"
+    )
 
     return username
 
@@ -91,7 +96,9 @@ def login_user():
             for line in file:
                 saved_user, saved_pw = line.strip().split(":")
                 if saved_user == username and saved_pw == hashed_pw:
-                    console.print(f"[bold green]'{username}'[/bold green] Login successfull!")
+                    console.print(
+                        f"[bold green]'{username}'[/bold green] Login successfull!"
+                    )
 
                     return username
 
@@ -147,7 +154,7 @@ def render_notes_table(rows, header_style="bold green"):
     console.print(table)
 
 
-def add_note_to_db(user, note, tags, due_date):
+def add_note_to_db(user, note, tags, due_date, conn=None):
     """
     Add a new note to the SQLite database after checking for duplicates.
 
@@ -161,36 +168,36 @@ def add_note_to_db(user, note, tags, due_date):
         bool: True if note was added, False if it was a duplicate.
     """
 
+    conn = conn or get_connection()
     tag_string = ",".join(tags) if tags else None
-    with get_connection() as conn:
-        cursor = conn.cursor()
-        cursor.execute(
-            """
-            SELECT * FROM notes WHERE user = ? AND note = ? AND tags = ? AND due_date IS?
-        """,
-            (user, note, tag_string, due_date),
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        SELECT * FROM notes WHERE user = ? AND note = ? AND tags = ? AND due_date IS?
+    """,
+        (user, note, tag_string, due_date),
+    )
+
+    duplicate = cursor.fetchone()
+
+    if duplicate:
+        console.print(
+            "[yellow]Note already exists with same content, tags, and due date."
+            "Skipping save.[/yellow]"
         )
+        return False
 
-        duplicate = cursor.fetchone()
+    cursor.execute(
+        """
+        INSERT INTO notes (user, note, tags, due_date)
+        VALUES (?, ?, ?, ?)
+    """,
+        (user, note, tag_string, due_date),
+    )
 
-        if duplicate:
-            console.print("[yellow]Note already exists with same content, tags, and due date. Skipping save.[/yellow]")
-
-            conn.close()
-            return False
-
-        cursor.execute(
-            """
-            INSERT INTO notes (user, note, tags, due_date)
-            VALUES (?, ?, ?, ?)
-        """,
-            (user, note, tag_string, due_date),
-        )
-
-        conn.commit()
-        conn.close()
-        console.print("[green]Note added successfully.[/green]")
-        return True
+    conn.commit()
+    console.print("[green]Note added successfully.[/green]")
+    return True
 
 
 def view_note_from_db(user):
@@ -263,7 +270,9 @@ def import_txt_to_db(user):
             add_note_to_db(user, note_part.strip(), tags, due_date)
             imported += 1
 
-    console.print(f"[green]Imported {imported} notes from {notes_file} into DB.[/green]")
+    console.print(
+        f"[green]Imported {imported} notes from {notes_file} into DB.[/green]"
+    )
 
 
 def import_json_to_db(user):
@@ -304,7 +313,10 @@ def search_notes_by_keyword(user, keyword):
 
     with get_connection() as conn:
         cursor = conn.cursor()
-        query = "SELECT id, note, tags, due_date FROM notes WHERE user = ? AND LOWER(note) LIKE LOWER(?)"
+        query = (
+            "SELECT id, note, tags, due_date FROM notes "
+            "WHERE user = ? AND LOWER(note) LIKE LOWER(?)"
+        )
         cursor.execute(query, (user, f"%{keyword.lower()}%"))
         results = cursor.fetchall()
 
@@ -401,16 +413,26 @@ def edit_note_by_id(user, note_id):
         old_note, old_tags, old_due = row
         console.print(
             Panel.fit(
-                f"Current Note:\n[cyan]{old_note}[/cyan]\nTags:[yellow]{old_tags or '-'}[/yellow]\nDue:[magenta]{old_due or '-'}[/magenta]"
+                (
+                    f"Current Note:\n[cyan]{old_note}[/cyan]\n"
+                    f"Tags:[yellow]{old_tags or '-'}[/yellow]\n"
+                    f"Due:[magenta]{old_due or '-'}[/magenta]"
+                )
             )
         )
 
         new_note = input("New note (leave blank to keep current):").strip()
-        new_tags = input("New tags (comma-separated, leave blank to keep current): ").strip()
-        new_due = input("New due date (YYYY-MM-DD, leave blank to keep current): ").strip()
+        new_tags = input(
+            "New tags (comma-separated, leave blank to keep current): "
+        ).strip()
+        new_due = input(
+            "New due date (YYYY-MM-DD, leave blank to keep current): "
+        ).strip()
 
         final_note = new_note if new_note else old_note
-        tag_list = [f"#{tags.strip()}" for tags in new_tags.split(",") if tags.strip()]
+        tag_list = [
+            f"#{tag.strip().lstrip('#')}" for tag in new_tags.split(",") if tag.strip()
+        ]
         final_tags = " ".join(tag_list) if tag_list else (old_tags or "")
         final_due = new_due if new_due else old_due
 
@@ -460,9 +482,13 @@ def show_due_alerts_from_db():
             continue  # Skip malformed data
 
     if overdue or due_today:
+        message = (
+            f"[bold red]{overdue} overdue[/bold red] | "
+            f"[bold yellow]{due_today} due_today[/bold yellow]"
+        )
         console.print(
             Panel.fit(
-                f"[bold red]{overdue} overdue[/bold red] | [bold yellow]{due_today} due_today[/bold yellow]",
+                message,
                 title="[bold green]Reminders[/bold green]",
                 border_style="bright_red",
             )
@@ -485,7 +511,9 @@ def export_notes_to_json(user):
 
     data = []
     for note, tags, due in notes:
-        data.append({"note": note, "tags": tags.split(",") if tags else [], "due_date": due})
+        data.append(
+            {"note": note, "tags": tags.split(",") if tags else [], "due_date": due}
+        )
 
     with open(f"{user}_notes_export.json", "w") as f:
         json.dump(data, f, indent=4)
@@ -525,7 +553,9 @@ def main():
 
     user = None
 
-    console.print("[bold cyan]Welcome to StarCodersecondMind Secure Notepad[/bold cyan]")
+    console.print(
+        "[bold cyan]Welcome to StarCodersecondMind Secure Notepad[/bold cyan]"
+    )
 
     while user is None:
         console.print(
@@ -545,16 +575,18 @@ def main():
 
         if auth_choice == "1":
             user = login_user()
+            show_due_alerts_from_db()
         elif auth_choice == "2":
             user = register_user()
         elif auth_choice == "3":
-            if Prompt.ask("Are you sure you want to exit?", choices=["yes", "no"]) == "yes":
+            if (
+                Prompt.ask("Are you sure you want to exit?", choices=["yes", "no"])
+                == "yes"
+            ):
                 console.print("[green]Goodbye![/green]")
                 exit()
         else:
             console.print("[red]Invalid choice.[/red]")
-
-    show_due_alerts_from_db()
 
     while True:
         console.print(
@@ -578,7 +610,24 @@ def main():
                 box=box.ROUNDED,
             )
         )
-        choice = Prompt.ask("Please enter your choice", choices=["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"])
+        choice = Prompt.ask(
+            "Please enter your choice",
+            choices=[
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12",
+                "13",
+            ],
+        )
 
         if choice == "1":
             your_note = input("Enter your note: ").strip()
@@ -594,19 +643,33 @@ def main():
                 )
                 continue
 
-            your_tags = input("Add tags (comma-separated, e.g., todo,idea) or press 'Enter' to skip: ").strip()
+            your_tags = input(
+                "Add tags (comma-separated, e.g., todo,idea) or press 'Enter' to skip: "
+            ).strip()
             due_input = input("Add due date (YYYY-MM-DD) or leave blank: ").strip()
 
-            tag_list = [f"#{tag.strip()}" for tag in your_tags.split(",") if tag.strip()]
+            tag_list = [
+                f"#{tag.strip()}" for tag in your_tags.split(",") if tag.strip()
+            ]
 
             due_date = None
             if due_input:
                 try:
-                    due_date = datetime.strptime(due_input, "%Y-%m-%d").strftime("%Y-%m-%d")
+                    due_date = datetime.strptime(due_input, "%Y-%m-%d").strftime(
+                        "%Y-%m-%d"
+                    )
                 except ValueError:
                     console.print("[red]Invalid date format. Skipping due date.[/red]")
 
-            console.print(Panel.fit(f"Note:\n[cyan]{your_note}[/cyan]\nTags:[yellow]{tag_list or '-'}[/yellow]\nDue:[magenta]{due_date or '-'}[/magenta]"))
+            console.print(
+                Panel.fit(
+                    (
+                        f"Note:\n[cyan]{your_note}[/cyan]\n"
+                        f"Tags:[yellow]{tag_list or '-'}[/yellow]\n"
+                        f"Due:[magenta]{due_date or '-'}[/magenta]"
+                    )
+                )
+            )
             if Prompt.ask("Save this note?", choices=["yes", "no"]) == "yes":
                 add_note_to_db(user, your_note, tag_list, due_date)
                 console.print("[bold green]Note saved to DB.[/bold green]")
@@ -628,7 +691,9 @@ def main():
         elif choice == "4":
             view_note_from_db(user)
             while True:
-                user_input = Prompt.ask("Enter note ID to delete (or type 'cancel' to abort):").strip()
+                user_input = Prompt.ask(
+                    "Enter note ID to delete (or type 'cancel' to abort):"
+                ).strip()
                 if user_input.lower() == "cancel":
                     console.print("[yellow]Delete Cancelled.[/yellow]")
                     break
@@ -642,7 +707,10 @@ def main():
                         console.print(f"[red]Not with ID {note_id} not found[/red]")
                         continue
                 else:
-                    console.print("[red]Invalid ID entered. Please enter a number or type 'cancel[/red]")
+                    console.print(
+                        "[red]Invalid ID entered. Please enter a number "
+                        "or type 'cancel[/red]"
+                    )
 
         elif choice == "5":
             keyword = input("Keyword to search:").strip()
@@ -671,7 +739,10 @@ def main():
             export_notes_to_json(user)
 
         elif choice == "13":
-            if Prompt.ask("Are you sure you want to exit?", choices=["yes", "no"]) == "yes":
+            if (
+                Prompt.ask("Are you sure you want to exit?", choices=["yes", "no"])
+                == "yes"
+            ):
                 console.print("[bold green]Goodbye, StarCoder![/bold green]")
                 exit()
 

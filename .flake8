@@ -1,0 +1,4 @@
+
+[flake 8]
+max-line-length = 88
+exclude = .git.__pycahce__.env
