@@ -5,89 +5,77 @@
 ![Build Status](https://github.com/StarCoderSC/secondmind-cli/actions/workflows/python-app.yml/badge.svg)
 [![codecov](https://codecov.io/gh/StarCoderSC/secondmind-cli/main/graph/badge.svg)](https://codecov.io/gh/StarCoderSC/secondmind-cli)
 
-Welcome to **SecondMind SQL**, a simple, secure CLI notepad built with Python and SQLite. This project allows users to store and manage notes with support for tags, due dates, and user authentication.
-
-- 🧾 SQLite database storage
-- 🏷️ Tag filtering
-- 📆 Due date reminders
-- 🔐 User login/register (SHA256-hashed)
-- 📥 Import from TXT/JSON
-- 📤 Export to JSON
-- 🌈 Rich-powered colorful TUI
-- ✅ GitHub Actions CI for code linting
-
-
-## Features
-- **User Authentication**: Register and login using username and password.
-- **CRUD Operations**: Create, read, update, and delete notes.
-- **Tagging and Due Dates**: Add tags to organize your notes and set due dates.
-- **Export/Import**: Export notes to JSON and import from legacy text or JSON files.
-- **SQLite Database**: Notes are stored in a local SQLite database for persistence.
-
-## Installation
-
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/StarCoderSC/secondmind-cli.git
-
-    Install dependencies:
-
-        pip install -r requirements.txt
-
-Initialize the database by running:
-
-    python app.py
-
-Usage
-
-    Register a new user:
-    When prompted, choose to register by entering a username and password.
-
-    Create a new note:
-    You can add a note with optional tags and a due date.
-
-    View/Modify/Delete Notes:
-    You can view all notes, search for specific notes by keyword or tag, and edit or delete them.
-
-    Import and Export Notes:
-    You can import legacy notes from a .txt or .json file, and export your notes as a JSON file for backup.
-
-🔐 Auth System
-
-    Stores credentials hashed using SHA256
-
-    User login and registration via terminal
-
-    Credentials saved to users.txt
-
-📤 Export / 📥 Import
-
-    Supports legacy .txt and .json imports
-
-    JSON backup/export via CLI
-
-🛠 Roadmap
-
-Encryption support
-
-Tag autocomplete
-
-    Turn into installable CLI tool
-
-📄 License
-
-MIT License – See LICENSE file
-
+SecondMind SQL is a secure, colorful CLI notepad built in Python using SQLite.
+It supports user authentication, note tagging, due-date reminders, import/export, and more.
 
 ---
 
-## 📜 LICENSE (MIT)
+## 🚀 Features
 
-```txt
-MIT License
+- 🧾 **SQLite-backed Note Storage**
+- 🔐 **SHA256-based User Login/Register**
+- 🏷️ **Tag Filtering**
+- 📆 **Due Date Alerts**
+- 📥 **Import from .txt / .json**
+- 📤 **Export to .json**
+- 🌈 **Rich-powered Colorful TUI**
+- ✅ **CI via GitHub Actions + Test Coverage**
 
-Copyright (c) 2025 StarCoder
+---
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-...
-(Use `https://choosealicense.com/licenses/mit/` for full version.)
+## 📦 Installation
+
+```bash
+git clone https://github.com/StarCoderSC/secondmind-cli.git
+cd secondmind-cli
+pip install -r requirements.txt
+python app.py  # Launches the CLI and initializes the database
+
+🧑‍💻 Usage
+🔐 Register/Login
+
+You’ll be prompted in the terminal to register a username/password
+(securely hashed with SHA256 and stored in users.txt).
+📝 Note Operations
+
+    Add notes with optional #tags and due dates (YYYY-MM-DD)
+
+    View, update, or delete notes
+
+    Filter notes by keyword or tag
+
+📤 Export & 📥 Import
+
+    Export all notes to JSON
+
+    Import legacy notes from .txt or .json files
+
+🗺️ Roadmap
+
+AES Encryption support for notes
+
+Tag autocomplete
+
+    CLI installation via pip install secondmind
+
+📄 License
+
+This project is licensed under the MIT License.
+See the LICENSE file or choosealicense.com/licenses/mit for full details.
+🙌 Acknowledgements
+
+    Built with 💻 Python, 💾 SQLite, and 🎨 Rich
+
+    Auth powered by hashlib
+
+    Tested with pytest, CI via GitHub Actions, and coverage powered by pytest-cov
+
+📈 Contributions Welcome
+
+Pull requests, issues, and suggestions are welcome!
+If you find a bug or have an idea to improve SecondMind, don't hesitate to open an issue.
+
+    Made with patience, perseverance, and Python – by StarCoder.
+
+
+
