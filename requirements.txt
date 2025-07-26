@@ -2,4 +2,4 @@ rich
 pre-commit
 pytest
 pytest-cov
-unittest.mock
+unittest
