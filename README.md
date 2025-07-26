@@ -24,14 +24,14 @@ It supports user authentication, note tagging, due-date reminders, import/export
 ---
 
 ## 📦 Installation
+1. **Clone this repo**
+    ```bash
+    git clone https://github.com/StarCoderSC/secondmind-cli.git
+    cd secondmind-cli
+    pip install -r requirements.txt
+    python app.py  # Launches the CLI and initializes the database
 
-```bash
-git clone https://github.com/StarCoderSC/secondmind-cli.git
-cd secondmind-cli
-pip install -r requirements.txt
-python app.py  # Launches the CLI and initializes the database
-
-Usage
+🧑‍💻 Usage
 🔐 Register/Login
 
 You’ll be prompted in the terminal to register a username/password
