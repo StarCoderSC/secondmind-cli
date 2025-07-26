@@ -31,7 +31,7 @@ cd secondmind-cli
 pip install -r requirements.txt
 python app.py  # Launches the CLI and initializes the database
 
-🧑‍💻 Usage
+Usage
 🔐 Register/Login
 
 You’ll be prompted in the terminal to register a username/password
