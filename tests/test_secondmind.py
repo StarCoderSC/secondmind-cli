@@ -354,10 +354,10 @@ def test_view_note_with_notes(temp_db, monkeypatch):
     with patch("secondmind.core.get_connection", return_value=conn):
         add_note_to_db("testuser", "Sample note", ["#test"], "2025-08-01")
 
-    # Mock render_notes_table to check it was called
-    with patch("secondmind.core.render_notes_table") as mock_render:
-        view_note_from_db("testuser")
-        mock_render.assert_called_once()  # Should render
+        # Mock render_notes_table to check it was called
+        with patch("secondmind.core.render_notes_table") as mock_render:
+            view_note_from_db("testuser")
+            mock_render.assert_called_once()  # Should render
 
 
 def test_view_note_empty(temp_db, monkeypatch):
