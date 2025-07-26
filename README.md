@@ -1,9 +1,16 @@
 # StarCoder's SecondMind SQL CLI Notepad
 
 ![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)
-![License](https://img.shields.io/github/license/StarCoderSC/secondmind-cli)
-![Build Status](https://github.com/StarCoderSC/secondmind-cli/actions/workflows/python-app.yml/badge.svg)
-[![codecov](https://codecov.io/gh/StarCoderSC/secondmind-cli/main/graph/badge.svg)](https://codecov.io/gh/StarCoderSC/secondmind-cli)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![Last Commit](https://img.shields.io/github/last-commit/StarCoderSC/secondmind-cli)
+![Repo Size](https://img.shields.io/github/repo-size/StarCoderSC/secondmind-cli)
+
+[![Build Status](https://github.com/StarCoderSC/secondmind-cli/actions/workflows/python-app.yml/badge.svg)](https://github.com/StarCoderSC/secondmind-cli/actions)
+[![Code Coverage](https://codecov.io/gh/StarCoderSC/secondmind-cli/main/graph/badge.svg)](https://codecov.io/gh/StarCoderSC/secondmind-cli)
+[![Linting](https://img.shields.io/badge/linting-flake8-blue)](https://flake8.pycqa.org/)
+[![Code Style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![pre-commit](https://img.shields.io/badge/pre-commit-enabled-brightgreen?logo=pre--commit-enabled-brightgreen?logo=pre-commit)](https:/pre-commit.com/)
+
 
 SecondMind SQL is a secure, colorful CLI notepad built in Python using SQLite.
 It supports user authentication, note tagging, due-date reminders, import/export, and more.
@@ -76,6 +83,3 @@ Pull requests, issues, and suggestions are welcome!
 If you find a bug or have an idea to improve SecondMind, don't hesitate to open an issue.
 
     Made with patience, perseverance, and Python – by StarCoder.
-
-
-
