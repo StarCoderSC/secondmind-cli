@@ -9,7 +9,7 @@
 [![Code Coverage](https://codecov.io/gh/StarCoderSC/secondmind-cli/main/graph/badge.svg)](https://codecov.io/gh/StarCoderSC/secondmind-cli)
 [![Linting](https://img.shields.io/badge/linting-flake8-blue)](https://flake8.pycqa.org/)
 [![Code Style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![pre-commit](https://img.shields.io/badge/pre-commit-enabled-brightgreen?logo=pre--commit-enabled-brightgreen?logo=pre-commit)](https:/pre-commit.com/)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://pre-commit.com/)
 
 
 SecondMind SQL is a secure, colorful CLI notepad built in Python using SQLite.
