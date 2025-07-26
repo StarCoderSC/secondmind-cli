@@ -581,8 +581,7 @@ def main():
         elif auth_choice == "3":
             if (
                 Prompt.ask("Are you sure you want to exit?", choices=["yes", "no"])
-                == "yes"
-            ):
+            ) == "yes":
                 console.print("[green]Goodbye![/green]")
                 exit()
         else:
@@ -741,8 +740,7 @@ def main():
         elif choice == "13":
             if (
                 Prompt.ask("Are you sure you want to exit?", choices=["yes", "no"])
-                == "yes"
-            ):
+            ) == "yes":
                 console.print("[bold green]Goodbye, StarCoder![/bold green]")
                 exit()
 
